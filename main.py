@@ -40,6 +40,47 @@ def connect():
 
 
 def newVehicleRegistration():
+    #curs.execute()
+    #enter car data to be inserted(will refine later)
+    #error handling will be done later
+    serial_no = input("inpur serial_no")
+    maker = input("input maker >")
+    model = input("input model >")
+    year = input("input year >")
+    color = input("input color >")
+    type_id = input("input type_id >")
+    vdata = [(serial_no, maker, model, year, color, type_id)]
+    
+    own = input("new vehicle owner? (y) or (n) > ").lower()
+    ownbool = False
+    while(ownbool == FALSE):
+        if (own == 'y'):
+            #to be done
+            ownbool = TRUE
+            pass
+        if (own == 'n'):
+            owner_id = input("please provide owner's sin")
+            prime_o = input("is he/she primary owner? ")
+            odata = [(owner_id,serial_no,is_primary_owner)]
+             
+            cursInsert = connection.cursor()
+            cursInsert.bindarraysize = 1
+            cursInsert.setinputsizes(int, int, bool)
+            cursInsert.executemany("INSERT INTO owner(owner_id,vehicle_id,is_primary_owner)" 
+                                   "VALUES (:1, :2, :3)",odata)   
+            
+            cursInsert = connection.cursor()
+            cursInsert.bindarraysize = 1
+            cursInsert.setinputsizes(int, 30, 30, int, 15, int)
+            cursInsert.executemany("INSERT INTO vehicle(serial_no, maker, model, year, color, type_id)" 
+                                   "VALUES (:1, :2, :3, :4, :5, :6)",vdata)   
+            ownbool = TRUE
+            pass
+        else:
+            print("please provide proper response or (e) to exit")
+            own = input("new vehicle owner? (y) or (n) or (e) to exit> ")
+            if (own = e):
+                pass
     pass
 
 
