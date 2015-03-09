@@ -106,6 +106,10 @@ def main():
     if connection == 0:
         print("Bye")
         return
+    
+    # setup new tables
+    setup(curs, connection)
+
     print("1. New Vehicle Registration (n)")
     print("2. Auto Transaction (a)")
     print("3. Driver Licence Registration (d)")
