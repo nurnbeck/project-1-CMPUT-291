@@ -81,7 +81,7 @@ def searchEngine(curs, connection):
               if validity == 3:
                      serialnumber = input("Vehicle History - Please enter correct Serial Number: ")
               
-                     search_str = # ###############################################
+                     search_str = ("SELECT COUNT(transaction_id), AVG(price), COUNT(ticket_no) FROM auto_sale a, ticket t WHERE a.vehicle_id = ",serialnumber, " AND t.vehicle_id = ", serialnumber)
                      curs.execute(search_str)    
                      result = curs.fetchall()
                      print("Vehicle History - Vehicle with Serial Number: ",serialnumber)
