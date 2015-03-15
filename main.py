@@ -4,6 +4,7 @@
 import sys
 import cx_Oracle
 import getpass
+from searchEngine import searchEngine # ############# modification 2015.Mar.15 ############## 
 
 def connect():
     '''
@@ -96,7 +97,7 @@ def violationRecord():
     pass
 
 
-def searchEngine():
+def searchEngine(curs, connection): # ############# modification 2015.Mar.15 ##############
     pass
 
 
