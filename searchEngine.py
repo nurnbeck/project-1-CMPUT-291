@@ -20,6 +20,7 @@ def searchEngine(curs, connection):
                             
                      if search_by == 1:
                             nameorsin = str(input("Driver's Info - Enter Name: "))
+                            
                             search_str = ("SELECT name, licence_no, addr, birthday, class, description, expiring_data FROM people p, drive_licence d, driving_condition dc, restriction r WHERE p.sin = d.sin AND d.licence_no = r.licence_no AND r.r_id = dc.c_id AND p.name = ",nameorsin,";")
                             curs.execute(search_str)
                             result = curs.fetchall()
@@ -31,10 +32,8 @@ def searchEngine(curs, connection):
                                           print(i)
                                    
                      if search_by == 2:
-                            nameorsin = False
-                            while nameorsin == False:
-                                   inputa = input("Driver's Info - Enter SIN: ")
-                                   nameorsin = checkInput(inputa)
+                            nameorsin = input("Driver's Info - Enter SIN: ")
+       
                             search_str = ("SELECT name, licence_no, addr, birthday, class, description, expiring_data FROM people p, drive_licence d, driving_condition dc, restriction r WHERE p.sin = d.sin AND d.licence_no = r.licence_no AND r.r_id = dc.c_id AND p.sin = ",int(nameorsin),";")
                             curs.execute(search_str)    
                             result = curs.fetchall()
@@ -53,10 +52,8 @@ def searchEngine(curs, connection):
                             search_by = checkInput(search_no)
                             
                      if search_by == 1:
-                            noorsin = False
-                            while noorsin == False:
-                                   inputb = input("Violation Records - Please enter correct Liscence Number: ")
-                                   noorsin = checkInput(inputb)
+                            noorsin = input("Violation Records - Please enter correct Liscence Number: ")
+              
                             search_str = ("SELECT name, licence_no, ticket_no, violator_no, vehicle_id, office_no, vtype, vdate, place, fine, descriptions FROM people p, ticket t, ticket_type tt, drive_licence d WHERE p.sin = t.violator_no AND t.vtype == tt.vtype AND p.sin = d.sin AND d.licence_no = ",int(noorsin),";")
                             curs.execute(search_str)    
                             result = curs.fetchall()
@@ -68,10 +65,8 @@ def searchEngine(curs, connection):
                                           print(i)
                      
                      if search_by == 2:
-                            noorsin = False
-                            while noorsin == False:
-                                   inputb = input("Violation Records - Please enter correct SIN: ")
-                                   noorsin = checkInput(inputb)
+                            noorsin = input("Violation Records - Please enter correct SIN: ")
+ 
                             search_str = ("SELECT name, ticket_no, violator_no, vehicle_id, office_no, vtype, vdate, place, fine, descriptions FROM people p, ticket t, ticket_type tt WHERE p.sin = t.violator_no AND t.vtype == tt.vtype AND p.sin = ",int(noorsin),";")
                             curs.execute(search_str)    
                             result = curs.fetchall()
@@ -84,10 +79,8 @@ def searchEngine(curs, connection):
                      
                      
               if validity == 3:
-                     serialnumber = False
-                     while serialnumber == False:
-                            inputc = input("Vehicle History - Please enter correct Serial Number: ")
-                            serialnumber = checkInput(inputc)
+                     serialnumber = input("Vehicle History - Please enter correct Serial Number: ")
+              
                      search_str = # ###############################################
                      curs.execute(search_str)    
                      result = curs.fetchall()
