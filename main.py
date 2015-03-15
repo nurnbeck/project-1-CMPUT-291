@@ -4,7 +4,7 @@
 import sys
 import cx_Oracle
 import getpass
-from searchEngine import searchEngine # ############# modification 2015.Mar.15 ############## 
+from searchEngine import searchEngine              # ############# modification 2015.Mar.15 ############## 
 
 def connect():
     '''
@@ -96,10 +96,10 @@ def driverLicenceRegistration():
 def violationRecord():
     pass
 
-
+'''
 def searchEngine(curs, connection): # ############# modification 2015.Mar.15 ##############
     pass
-
+'''
 
 # will call setup function somewhere in the main function
 def main():
@@ -140,7 +140,7 @@ def main():
         elif inp == '4' or inp == 'v':
             violationRecord()
         elif inp == '5' or inp == 's':
-            searchEngine()
+            searchEngine(curs, connection)           # ############# modification 2015.Mar.15 ##############
         else:
             print("Invalid")
         print(inp)
