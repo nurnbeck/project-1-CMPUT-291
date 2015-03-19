@@ -41,48 +41,77 @@ def connect():
 
 
 def newVehicleRegistration():
-    #curs.execute()
+#curs.execute()
     #enter car data to be inserted(will refine later)
     #error handling will be done later
-    serial_no = input("inpur serial_no")
-    maker = input("input maker >")
-    model = input("input model >")
-    year = input("input year >")
-    color = input("input color >")
-    type_id = input("input type_id >")
-    vdata = [(serial_no, maker, model, year, color, type_id)]
-    
-    own = input("new vehicle owner? (y) or (n) > ").lower()
+
     ownbool = False
-    while(ownbool == FALSE):
-        if (own == 'y'):
+    while(ownbool == False):
+        #section for checking if new sin is entered
+        owner_id = input("please provide owner's sin")
+        search_str = ("SELECT name FROM people WHERE p.sin =",owner_id,";")
+        curs.execute(search_str)    
+        result = curs.fetchall()
+        if (result.len() == 0):
+            n_own = 'y'
+            n_own = input("new sin entered, add new person? (y) or (n) or (e) >")
+            if (own == 'e'):
+                pass            
+        else:  
+            n_own = input("user found, add vehicle? (y)es or (n)o or (e)xit >")
+            if (own == 'e'):
+                pass        
+            
+            
+        if (n_own == 'y'):
             #to be done
-            ownbool = TRUE
-            pass
-        if (own == 'n'):
-            owner_id = input("please provide owner's sin")
-            prime_o = input("is he/she primary owner? ")
-            odata = [(owner_id,serial_no,is_primary_owner)]
-             
-            cursInsert = connection.cursor()
+            name = str(input("provide person's name"))
+            height = input("provide height")
+            weight = int(input("provide weight (lbs)"))
+            eyecolor = input("provide eye color")
+            haircolor = input("provide haircolor")
+            addr = input("provide address")
+            gender = input("provide gender")
+            birthday = input("provide birthday")
+            pdata = [(owner_id,name,height,weight,eyecolor,haircolor,addr,gender,birthday)]
+            cursInsert.bindarraysize = 1
+            cursInsert.setinputsizes(30, 30, int, int, 10, 10, 30, 50, 1, DATE)
+            cursInsert.executemany("INSERT INTO people(owner_id,name, height, weight, eyecolor, haircolor, addr, gender, birthday)" 
+                                   "VALUES (:1, :2, :3, :4, :5, :6, :7, :8, :9)",pdata)               
+            own = 'n'
+            
+            #new owner handled, vehicle adding
+        if (n_own == 'n'):
+            
+            serial_no = input("inpur serial_no")
+            maker = input("input maker >")
+            model = input("input model >")
+            year = input("input year >")
+            color = input("input color >")
+            type_id = input("input type_id >")
+            vdata = [(serial_no, maker, model, year, color, type_id)]            
+            
+            
+            cursInsert.bindarraysize = 1
+            cursInsert.setinputsizes(int, 30, 30, int, 15, int)
+            cursInsert.executemany("INSERT INTO vehicle(serial_no, maker, model, year, color, type_id)" 
+                                   "VALUES (:1, :2, :3, :4, :5, :6)",vdata)
+            
+            primary_owner = input("is he/she primary owner of this vehicle? ")
+            odata = [(owner_id,serial_no,is_primary_owner)]            
+            
             cursInsert.bindarraysize = 1
             cursInsert.setinputsizes(int, int, bool)
             cursInsert.executemany("INSERT INTO owner(owner_id,vehicle_id,is_primary_owner)" 
                                    "VALUES (:1, :2, :3)",odata)   
-            
-            cursInsert = connection.cursor()
-            cursInsert.bindarraysize = 1
-            cursInsert.setinputsizes(int, 30, 30, int, 15, int)
-            cursInsert.executemany("INSERT INTO vehicle(serial_no, maker, model, year, color, type_id)" 
-                                   "VALUES (:1, :2, :3, :4, :5, :6)",vdata)   
-            ownbool = TRUE
-            pass
+        
         else:
-            print("please provide proper response or (e) to exit")
-            own = input("new vehicle owner? (y) or (n) or (e) to exit> ")
-            if (own = e):
-                pass
-    pass
+            own = input("enter another owner/vehicle? (y) or (n) or (e) to exit> ").lower()
+            if (own == 'e'):
+                ownbool = True
+            if (own == 'n'):
+                ownbool = True
+                
 
 
 def autoTransaction():
