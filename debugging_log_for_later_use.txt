@@ -1,0 +1,6 @@
+# how to send string through curs.execution
+owner_id = str(123)
+search_str = "SELECT name FROM people WHERE p.sin = \""
+search_str += owner_id
+search_str += "\""
+print(search_str) -> SELECT name FROM people WHERE p.sin = "123";
