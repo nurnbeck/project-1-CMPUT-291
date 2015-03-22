@@ -20,7 +20,8 @@ def violationRecord():
         valid = False
         while not valid:
             violator_no = str(input("Enter the SIN of the violator: "))
-            search_str = "SELECT name FROM people WHERE p.sin = \""
+            search_str = "SELECT name FROM people WHERE p.sin = "
+            search_str += "\""
             search_str += violator_no
             search_str += "\""
             curs.execute(search_str)
@@ -35,7 +36,8 @@ def violationRecord():
         valid = False
         while not valid:
             vehicle_id = str(input("Enter the serial number of the vehicle involved: "))
-            search_str = "SELECT * FROM vehicle v WHERE v.serial_no = \""
+            search_str = "SELECT * FROM vehicle v WHERE v.serial_no = "
+            search_str += "\""
             search_str += vehicle_id
             search_str += "\""
             curs.execute(search_str)
@@ -51,7 +53,8 @@ def violationRecord():
         valid = False
         while not valid:
             office_no = str(input("Enter the SIN of the officer: "))
-            search_str = "SELECT name FROM people WHERE p.sin = \""
+            search_str = "SELECT name FROM people WHERE p.sin = "
+            search_str += "\""
             search_str += office_no
             search_str += "\""
             curs.execute(search_str)
@@ -66,7 +69,8 @@ def violationRecord():
         valid = False
         while not valid:
             vtype = input("Enter valid vehicle type: ")
-            search_str = "SELECT * FROM ticket_type v WHERE v.vtype = \""
+            search_str = "SELECT * FROM ticket_type v WHERE v.vtype = "
+            search_str += "\""
             search_str += vtype
             search_str += "\""
             curs.execute(search_str)
