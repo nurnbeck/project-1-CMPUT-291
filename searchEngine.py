@@ -97,7 +97,7 @@ def searchEngine(curs, connection):
                      search_str += "\""
                      search_str += serialnumber
                      search_str += "\""
-                     search_str += "AND t.vehicle_id = "
+                     search_str += " AND t.vehicle_id = "
                      search_str += "\""
                      search_str += serialnumber
                      search_str += "\""
