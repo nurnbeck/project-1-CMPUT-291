@@ -91,7 +91,7 @@ def violationRecord():
         
         valid = False
         while not valid:
-            answer = input("Do you want to enter another violation record? y/n")
+            answer = input("Do you want to enter another violation record? y/n").lower()
             if answer == 'y' or 'n':
                 valid = True
                 if answer == 'y':
