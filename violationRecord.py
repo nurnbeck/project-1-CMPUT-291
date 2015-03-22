@@ -87,7 +87,7 @@ def violationRecord():
         place = input("Enter the place where the accident happened: ")        
         descriptions = input("Enter description of the accident: ")
         
-        curs.execute("INSERT INTO ticket(ticket_no, name, violator_no, vehicle_id, office_no, vtype, vdate, place, descriptions) VALUES (" +  "\'" + ticket_no + "\'" +  "\'" + violator_no + "\'" + "\'" + vehicle_id+ "\'"+ "\'" + office_no + "\'"    +  "\'" + vtype + "\'" +     "\'" +date+ "\'"+     "\'"+place+"\'"+    "\'"+descriptions+ " \')") 
+        curs.execute("INSERT INTO ticket(ticket_no, name, violator_no, vehicle_id, office_no, vtype, vdate, place, descriptions) VALUES (" + ticket_no  +  ", \'" + violator_no + "\'" + ", \'" + vehicle_id+ "\'"+ ", \'" + office_no + "\'"    +  ", \'" + vtype + "\'" +     ", \'" +date+ "\'"+     ", \'"+place+"\'"+    ", \'"+descriptions+ " \')") 
         
         valid = False
         while not valid:
