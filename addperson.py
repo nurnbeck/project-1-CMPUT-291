@@ -2,8 +2,10 @@
 Adds one person to the database
 - Does not handle people who were born before christ
 
-Not tested yet
+tested
 '''
+import datetime
+import cx_Oracle
 
 def addperson(curs, connection, sin = 'zzzzzz'):
     # input sin
@@ -88,15 +90,18 @@ def addperson(curs, connection, sin = 'zzzzzz'):
         addr = input("Input address >")
 
     # input gender
+    #bugged
     gender = input("Input gender (m/f) >").lower()
-    while gender != 'm' or gender != 'f':
+    while (gender != 'm' or gender != 'f'):
         print("Invalid input")
         gender = input("Input gender >").lower()
-
     # input birthday
     while True:
-        birthday = input("Input birthday (yyyy/mm/dd) >")
+        #i had to change this because of the way SQL formats
+        birthday = input("Input birthday (mm-dd-yyyy) >")
+        '''
         yi = birthday.find('/')
+    
         if yi <= 0:
             print("Invalid input")
             continue
@@ -104,10 +109,10 @@ def addperson(curs, connection, sin = 'zzzzzz'):
         birthday = birthday[yi+1:]
         mi = birthday.find('/')
         if mi <= 0:
-            print("Inbalid input")
+            print("Invalid input")
             continue
         month = birthday[:mi]
-        day = inp[mi+1:]
+        day = birthday[mi+1:]
         try:
             year = int(year)
             month = int(month)
@@ -138,11 +143,44 @@ def addperson(curs, connection, sin = 'zzzzzz'):
             if day < 1 or day > 30:
                 print("Invalid input")
                 continue
+                
+        #birthday = '11-11-1995'
+        '''
         break
-
-    # Insert and commit
-    curs.execute("Insert into people "
-                 "values('%s', '%s', %f, %f, '%s', '%s', '%s', '%s', '%s')"%(sin, name, height, weight, eyecolor, haircolor, addr, gender, birthday.strftime('%d-%b-%Y')))	
-    connection.commit()
-
-    return
+    #fixed
+    query = """insert into people values(
+    :sin,
+    :name,
+    :height,
+    :weight,
+    :eyecolor,
+    :haircolor,
+    :addr,
+    :gender,
+    to_date(:birthday, 'MM-DD-YYYY'))"""
+    try:
+        curs.execute(query,{'sin':sin,
+                            'name':name,
+                            'height':height,
+                            'weight':weight,
+                            'eyecolor':eyecolor,
+                            'haircolor':haircolor,
+                            'addr':addr,
+                            'gender':gender,
+                            'birthday':birthday}
+                     )
+        print("New person successfully added.")
+        connection.commit()
+        return True
+    except cx_Oracle.IntegrityError as ie:
+        print("An integrity error was thrown.")
+        print("The SIN you attemped to enter already exists in the database.")
+        return False
+    except Exception as e:
+        errs, = e.args
+        print("Oops, an exception was thrown.")
+        print("Error code:" + str(errs.code))
+        print("Error message:" + errs.message)
+        return False
+    
+    
