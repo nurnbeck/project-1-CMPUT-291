@@ -21,7 +21,7 @@ def searchEngine(curs, connection):
                      if search_by == 1:
                             nameorno = str(input("Driver's Info - Enter Name: "))
                             
-                            search_str = ("SELECT name, licence_no, addr, birthday, class, description, expiring_data FROM people p, drive_licence d, driving_condition dc, restriction r WHERE p.sin = d.sin AND d.licence_no = r.licence_no AND r.r_id = dc.c_id AND p.name = ")
+                            search_str = ("SELECT name, d.licence_no, addr, birthday, class, description, expiring_date FROM people p, drive_licence d, driving_condition dc, restriction r WHERE p.sin = d.sin AND d.licence_no = r.licence_no AND r.r_id = dc.c_id AND p.name = ")
                             search_str += "\'"
                             search_str += nameorno
                             search_str += "\'"
@@ -35,9 +35,9 @@ def searchEngine(curs, connection):
                                           print(i)
                                    
                      if search_by == 2:
-                            nameorno = str(input("Driver's Info - Enter SIN: "))
+                            nameorno = str(input("Driver's Info - Enter Licence No: "))
        
-                            search_str = ("SELECT name, licence_no, addr, birthday, class, description, expiring_data FROM people p, drive_licence d, driving_condition dc, restriction r WHERE p.sin = d.sin AND d.licence_no = r.licence_no AND r.r_id = dc.c_id AND d.licence_no = ")
+                            search_str = ("SELECT name, d.licence_no, addr, birthday, class, description, expiring_date FROM people p, drive_licence d, driving_condition dc, restriction r WHERE p.sin = d.sin AND d.licence_no = r.licence_no AND r.r_id = dc.c_id AND d.licence_no = ")
                             search_str += "\'"
                             search_str += str(nameorno)
                             search_str += "\'"
@@ -60,7 +60,7 @@ def searchEngine(curs, connection):
                      if search_by == 1:
                             noorsin = str(input("Violation Records - Please enter correct Liscence Number: "))
               
-                            search_str = ("SELECT name, licence_no, ticket_no, violator_no, vehicle_id, office_no, vtype, vdate, place, fine, descriptions FROM people p, ticket t, ticket_type tt, drive_licence d WHERE p.sin = t.violator_no AND t.vtype == tt.vtype AND p.sin = d.sin AND d.licence_no = "))
+                            search_str = ("SELECT name, d.licence_no, t.ticket_no, t.violator_no, t.vehicle_id, t.office_no, t.vtype, t.vdate, t.place, tt.fine, descriptions FROM people p, ticket t, ticket_type tt, drive_licence d WHERE p.sin = t.violator_no AND t.vtype = tt.vtype AND p.sin = d.sin AND d.licence_no = ")
                             search_str += "\'"
                             search_str += noorsin
                             search_str += "\'"
@@ -76,7 +76,7 @@ def searchEngine(curs, connection):
                      if search_by == 2:
                             noorsin = str(input("Violation Records - Please enter correct SIN: "))
  
-                            search_str = ("SELECT name, ticket_no, violator_no, vehicle_id, office_no, vtype, vdate, place, fine, descriptions FROM people p, ticket t, ticket_type tt WHERE p.sin = t.violator_no AND t.vtype == tt.vtype AND p.sin = ")
+                            search_str = ("SELECT name, t.ticket_no, t.violator_no, t.vehicle_id, t.office_no, t.vtype, t.vdate, t.place, tt.fine, descriptions FROM people p, ticket t, ticket_type tt WHERE p.sin = t.violator_no AND t.vtype = tt.vtype AND p.sin = ")
                             search_str += "\'"
                             search_str += noorsin
                             search_str += "\'"
