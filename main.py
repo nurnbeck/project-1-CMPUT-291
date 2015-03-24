@@ -69,54 +69,38 @@ def newVehicleRegistration(curs,connection):
             if (n_own == 'e'):
                 pass        
             
-            
+            #add new people
         if (n_own == 'y'):
-            #to be done
-            name = str(input("provide person's name > "))
-            height = input("provide height > ")
-            weight = int(input("provide weight (lbs) > "))
-            eyecolor = input("provide eye color > ")
-            haircolor = input("provide haircolor > ")
-            addr = input("provide address > ")
-            gender = input("provide gender m or f > ")
             
-            birthday = input("provide birthday in y(xxxx) m(xx) day(xx) format > ")
-            #FIX DATE OF BIRTH BUG
-            birthdayarr = birthday.split(' ')
-            while((len(birthdayarr) > 2) or (int(birthdayarr[1]) > 12)):
-                birthday = input("provide proper birthday format > yxxxx mxxxx dxx ")
-                birthdayarr = birthday.split(' ')
-            year = int(birthdayarr[0])
-            month = int(birthdayarr[1])
-            if (int(birthdayarr[2]) > 31):
-                birthdayarr[2] = input("please input day in range 1-31")
-            day = int(birthdayarr[2])
-            print(year)
-            birthday = date(year,month,day)
-            pdata = [(owner_id,name,height,weight,eyecolor,haircolor,addr,gender,birthday)]
-            #curs.bindarraysize = 1
-            #curs.setinputsizes(30, 30, int, int, 10, 10, 30, 50, 1, cx_0racle.Date)
-            #curs.execute("INSERT INTO people(owner_id,name, height, weight, eyecolor, haircolor, addr, gender, birthday)" 
-            #                       "VALUES (:1, :2, :3, :4, :5, :6, :7, :8, :9)",pdata)               
-            curs.execute("INSERT INTO people(owner_id,name,height,weight,eyecolor,haircolor,addr,gender,birthday)\
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, '%s') ",(owner_id,name,height,weight,eyecolor,haircolor,addr,gender,birthday))
-            
-            
-            
+             addperson(curs, connection, owner_id)      
             
             n_own = 'n'
             
             #new owner handled, vehicle adding
         if (n_own == 'n'):
             
-            serial_no = input("inpur serial_no > ")
+            serial_no = input("input serial_no > ")
+            while(len(serial_no) > 30):
+                serial_no = input("input too long, input serial_no > ")
+                
             maker = input("input maker > ")
+            while(len(serial_no) > 30):
+                maker = input("input too long, input maker > ")            
+                
             model = input("input model > ")
+            while(len(serial_no) > 30):
+                model = input("input too long, model > ")   
+                
             year = input("input year > ")
+            while(len(serial_no) > 30):
+                year = input("input too long, year > ")                   
             color = input("input color > ")
+            while(len(serial_no) > 30):
+                color = input("input too long, color > ")                   
             type_id = input("input type_id > ")
-            vdata = [(serial_no, maker, model, year, color, type_id)]            
-            
+            while(len(serial_no) > 30):
+                type_id = input("input too long, type_id > ")                   
+            vdata = [(serial_no, maker, model, year, color, type_id)]   
             
             cursInsert.bindarraysize = 1
             cursInsert.setinputsizes(int, 30, 30, int, 15, int)
