@@ -1,12 +1,15 @@
 import random
+from addperson import addperson
 
-def autoTransaction():
+def autoTransaction(curs,connection):
        another_round = True
+       foo = True
+       quit = False
        while another_round:
               transaction_id = random.randint(0,999999999)
               valid = False
               while not valid:
-                     search_str = ("SELECT * FROM auto_sale a WHERE a.transaction_id = ", transaction_id)
+                     search_str = ("SELECT * FROM auto_sale a WHERE a.transaction_id = "+ str(transaction_id))
                      curs.execute(search_str)
                      result = curs.fetchall()
                      if len(result) == 0:
@@ -18,7 +21,7 @@ def autoTransaction():
               valid = False
               while not valid:
                      seller_id = str(input("Enter the SIN of the seller: "))
-                     search_str = "SELECT name FROM people WHERE p.sin = "
+                     search_str = "SELECT name FROM people p WHERE p.sin = "
                      search_str += "\'"
                      search_str += seller_id
                      search_str += "\'"                     
@@ -26,15 +29,44 @@ def autoTransaction():
                      result = curs.fetchall()
                      if len(result) == 0:
                             valid = False
-                            print("Please enter valid sin\n")
+                            print("Do you want you add a new person? y/n")
+                            answer = str(input())
+                            
+                            while not (answer =='y' or answer == 'n'):
+                                   answer = str(input("Please enter y or n"))
+                            if answer =='y':
+                                   foo = addperson(curs, connection)
+                                   quit = False
+                                   
+                                   while foo == False:
+                                          
+                                          answer = 'a'
+                                          while not (answer =='y' or answer == 'n'):
+                                                 answer =  str(input("Do you want to keep adding a new person? y/n\n"))
+                                                 if answer =='y':
+                                                        foo = addperson(curs, connection)
+                                                 else:
+                                                        quit = True
+                                                        break
+                                          if quit:
+                                                 break
+                            elif quit:
+                                   break
+                                                 
+                            else:
+                                   foo = False
+                                   break
                      else: 
                             valid = True
+                            
+                     if quit:
+                            break
                      
               
               valid = False
-              while not valid:
+              while not valid and foo:
                      buyer_id = str(input("Enter the SIN of the buyer: "))
-                     search_str = "SELECT name FROM people WHERE p.sin ="
+                     search_str = "SELECT name FROM people p WHERE p.sin ="
                      search_str += "\'"
                      search_str += buyer_id
                      search_str += "\'"
@@ -48,7 +80,7 @@ def autoTransaction():
               
               
               valid = False
-              while not valid:
+              while not valid and foo:
                      vehicle_id = str(input("Enter the vehicle id: "))
                      search_str = "SELECT * FROM vehicle v WHERE v.serial_no = "
                      search_str += "\'"
@@ -74,28 +106,28 @@ def autoTransaction():
                      
        
               # check format?
-              
-              date = input("Enter the date when the accident happened: ")
+              if foo:
+                     date = input("Enter the date when the accident happened: ")
               
               
               # need to check if there's exactly two digits after the point?
               
               valid = False
-              while not valid:
-                     price = float(input("Enter the price"))
+              while not valid and foo:
+                     price = float(input("Enter the price: "))
                      if price > 10000000:
                             valid = False
-                            print("Please enter a valid price")
+                            print("Please enter a valid price: ")
                      else:
                             valid = True
-              
-              exe_str = "DELETE FROM owner o WHERE o.vehicle_id = "
-              exe_str += "\'"
-              exe_str += vehicle_id
-              exe_str += "\'"
-              curs.execute(exe_str)
-              
-              curs.execute("INSERT INTO auto_sale(transaction_id, seller_id, buyer_id, vehicle_id, s_date, price) VALUES (" + transaction_id+  ",\'"+ seller_id+ "\'"+      ",\'"+buyer_id+"\'"+     ",\'"+vehicle_id+"\'"+      ",\'"+s_date+"\'",      "\'"+price+"\')")
+              if foo:              
+                     exe_str = "DELETE * FROM owner o WHERE o.vehicle_id = "
+                     exe_str += "\'"
+                     exe_str += str(vehicle_id)
+                     exe_str += "\'"
+                     curs.execute(exe_str)
+       
+                     curs.execute("INSERT INTO auto_sale(transaction_id, seller_id, buyer_id, vehicle_id, s_date, price) VALUES (" + str(transaction_id)+  ",\'"+ str(seller_id)+ "\'"+      ",\'"+str(buyer_id)+"\'"+     ",\'"+str(vehicle_id)+"\'"+      ",\'"+str(date)+"\'",      "\'"+str(price)+"\')")
               
               valid = False
               while not valid:
