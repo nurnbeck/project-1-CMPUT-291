@@ -3,9 +3,10 @@ import datetime
 import cx_Oracle
 
 def addvehicle(curs, connection, serial_no = 'zzzzzz'):
-    serial_no = input("input serial_no > ")
-    while(len(serial_no) > 15):
-        serial_no = input("input too long, input serial_no > ")
+    if serial_no == 'zzzzzz':
+        serial_no = input("input serial_no > ")
+        while(len(serial_no) > 15):
+            serial_no = input("input too long, input serial_no > ")
         
     maker = input("input maker > ")
     while(len(maker) > 20):
