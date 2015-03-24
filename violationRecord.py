@@ -6,9 +6,18 @@ def violationRecord(curs,connection):
     foo = True
     quit = False    
     while another_round:
+        answer = 'a'
+        while not (answer == '1' or answer == '2'):
+            answer = str(input("Record for 1. primary owner\n2.a given driver"))
+        if answer == 'y':
+            ownerfault = True
+        else:
+            ownerfault = False
+            
         
+                         
         valid = False
-        while not valid:
+        while not valid and not ownerfault:
             seller_id = str(input("Enter the SIN of the violator: "))
             search_str = "SELECT name FROM people p WHERE p.sin = "
             search_str += "\'"
@@ -18,7 +27,7 @@ def violationRecord(curs,connection):
             result = curs.fetchall()
             if len(result) == 0:
                 valid = False
-                print("Do you want you add a new person? y/n")
+                print("The person does not exist. Do you want you add a new person? y/n")
                 answer = str(input())
                 
                 while not (answer =='y' or answer == 'n'):
@@ -53,7 +62,6 @@ def violationRecord(curs,connection):
             if quit:
                 break           
         
-       
      
         # get vehicle id
         valid = False
@@ -70,6 +78,8 @@ def violationRecord(curs,connection):
                 print("Please enter valid vehicle id\n")
             else: 
                 valid = True     
+        #if ownerfault == True:
+         #   seller_id
         
         
         # get officer number
