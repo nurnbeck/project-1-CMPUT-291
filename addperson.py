@@ -93,6 +93,10 @@ def addperson(curs, connection, sin = 'zzzzzz'):
     #bugged
     gender = input("Input gender (m/f) >").lower()
     while (gender != 'm' or gender != 'f'):
+        if (gender == 'm'):
+            break
+        if (gender == 'f'):
+            break        
         print("Invalid input")
         gender = input("Input gender >").lower()
     # input birthday
