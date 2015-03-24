@@ -4,3 +4,41 @@ search_str = "SELECT name FROM people WHERE p.sin = \""
 search_str += owner_id
 search_str += "\""
 print(search_str) -> SELECT name FROM people WHERE p.sin = "123";
+
+#how to add data that includes dates(this took too long)
+
+#Helped
+    query = """insert into people values(
+    :sin,
+    :name,
+    :height,
+    :weight,
+    :eyecolor,
+    :haircolor,
+    :addr,
+    :gender,
+    to_date(:birthday, 'MM-DD-YYYY'))"""
+    try:
+        curs.execute(query,{'sin':sin,
+                            'name':name,
+                            'height':height,
+                            'weight':weight,
+                            'eyecolor':eyecolor,
+                            'haircolor':haircolor,
+                            'addr':addr,
+                            'gender':gender,
+                            'birthday':birthday}
+                     )
+        print("New person successfully added.")
+        connection.commit()
+        return True
+    except cx_Oracle.IntegrityError as ie:
+        print("An integrity error was thrown.")
+        print("The SIN you attemped to enter already exists in the database.")
+        return False
+    except Exception as e:
+        errs, = e.args
+        print("Oops, an exception was thrown.")
+        print("Error code:" + str(errs.code))
+        print("Error message:" + errs.message)
+        return False
