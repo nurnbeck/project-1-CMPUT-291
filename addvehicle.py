@@ -1,13 +1,8 @@
-'''
-Adds one vehicle to the database
-- Does not handle vehicles made after 9999
-
-tested
-'''
+'
 import datetime
 import cx_Oracle
 
-def addvehicle(curs, connection, serial = 'zzzzzz'):
+def addvehicle(curs, connection, serial_no = 'zzzzzz'):
     serial_no = input("input serial_no > ")
     while(len(serial_no) > 15):
         serial_no = input("input too long, input serial_no > ")
