@@ -7,6 +7,7 @@ import getpass
 from searchEngine import searchEngine              # ############# modification 2015.Mar.15 ############## 
 from setup import setup_tbls
 from datetime import date, datetime, timedelta
+from addvehicle import addvehicle
 
 def connect():
     '''
