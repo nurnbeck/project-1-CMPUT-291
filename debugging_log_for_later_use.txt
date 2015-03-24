@@ -7,7 +7,6 @@ print(search_str) -> SELECT name FROM people WHERE p.sin = "123";
 
 #how to add data that includes dates(this took too long)
 
-#Helped
     query = """insert into people values(
     :sin,
     :name,
