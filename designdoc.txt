@@ -1,0 +1,54 @@
+CMPUT 291 Project 1 Design Document
+ 
+Yishuo Wang & Hong Chen & Nolan Beck 
+ 
+//  Student 1 ID // Student 2 ID // 1413411 //
+ 
+Assignment due: Mar. 27, 2015
+ 
+ 
+ 
+(a) General Overview
+
+Main menu allows the user to choose one of the five actions that you can do. The five actions: search, new registration, auto transaction, driver licence registration, and record violation. Each of these five methods have its own functionality once inside the that method.
+ 
+(b) Design
+- Classes
+Main(): prompts the user to give there username and password to connect with the database. After words it gives text stating options that direct them around to the various methods available to them. After a letter or number is typed in if it doesn’t match a keyword it repeats the keywords with an error message saying you did not enter correctly.
+ 
+SearchEngine():
+ 
+newVehicleRegistration(): takes the user through the steps for registering a new car. Goes step by step testing the input to make sure it is correct.  If a owner isn’t in the database it first takes you through the steps of entering in an owner into the database then allows insertion of a car.
+ 
+Auto_Transaction(): 
+ 
+driverLicenceRegistration(): takes the user through the steps of entering in registering a person for a driver licence. It first enters the person into the database, then taking them through the extra information of entering in the required information for a licence. If the sin matches one already in the database an appropriate message is shown. An image is also shown able to be added into the database.
+ 
+violationRecord():
+ 
+addperson():takes curs, connection and possibly a sin number and proceeds to walk a user through inserting a new person into DB. if no sin is provided in function call one can be added later, checks length and validity of inputs
+
+addvehicle():takes curs, connection and possibly a sin number and proceeds to walk a user through inserting a new person into DB. if no licence number is provided in function call one can be added later, checks length and validity of inputs
+
+ 
+ 
+
+
+
+
+
+
+(c) Testing Strategy
+
+ 
+(d) Group Work Strategy
+- Method of Coordination
+We split the work up as even as possible and worked dependently on our portions and helped one another if that person encountered a bug that they found difficult. 
+ 
+(e) work load
+
+Nolan Beck: addvehicle(),addperson(),newVehicleRegistration(), driverLicenceRegistration()
+Hong Chen:
+Yishuo Wang:
+
+
