@@ -4,10 +4,12 @@
 import sys
 import cx_Oracle
 import getpass
-from searchEngine import searchEngine              # ############# modification 2015.Mar.15 ############## 
+from searchEngine import searchEngine             
 from setup import setup_tbls
 from datetime import date, datetime, timedelta
 from addvehicle import addvehicle
+from autoTransaction import autoTransaction
+from violationRecord import violationRecord
 
 def connect():
     '''
@@ -124,10 +126,10 @@ def newVehicleRegistration(curs,connection):
                 ownbool = True
                 
 
-
+'''
 def autoTransaction():
     pass
-
+'''
 
 def driverLicenceRegistration(curs, connection):
     sin = str(input("please input user sin > "))
@@ -169,11 +171,11 @@ def driverLicenceRegistration(curs, connection):
     curs.execute(insert,{'licence_no':licence_no, 'sin':sin,
                            'Dclass':Class, 'photo':image, 'issuing_date':issuing_date, 'expiring_date':expiring_date})
     
-
+'''
 def violationRecord():
     pass
 
-'''
+
 def searchEngine(curs, connection): # ############# modification 2015.Mar.15 ##############
     pass
 '''
@@ -211,11 +213,11 @@ def main():
         elif inp == '1' or inp == 'n':
             newVehicleRegistration(curs, connection)
         elif inp == '2' or inp == 'a':
-            autoTransaction()
+            autoTransaction(curs, connection)
         elif inp == '3' or inp == 'd':
             driverLicenceRegistration(curs, connection)
         elif inp == '4' or inp == 'v':
-            violationRecord()
+            violationRecord(curs, connection)
         elif inp == '5' or inp == 's':
             searchEngine(curs, connection)           # ############# modification 2015.Mar.15 ##############
         else:
