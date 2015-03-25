@@ -8,20 +8,32 @@ def violationRecord(curs,connection):
     while another_round:
         answer = 'a'
         while not (answer == '1' or answer == '2'):
-            answer = str(input("Record for 1. primary owner\n2.a given driver"))
-        if answer == 'y':
+            answer = str(input("Record for 1. primary owner\n 2.a given driver\n"))
+        if answer == '1':
             ownerfault = True
-        else:
+        elif answer == '2':
             ownerfault = False
             
+        
+        ticket_no = random.randint(0,999999999)
+        valid = False
+        while not valid:
+            search_str = ("SELECT * FROM ticket t WHERE t.ticket_no = "+ str(ticket_no))
+            curs.execute(search_str)
+            result = curs.fetchall()
+            if len(result) == 0:
+                valid = True
+            else: 
+                valid = False  
+                ticket_no = random.randint(0,999999999)
         
                          
         valid = False
         while not valid and not ownerfault:
-            seller_id = str(input("Enter the SIN of the violator: "))
+            violator_no = str(input("Enter the SIN of the violator: "))
             search_str = "SELECT name FROM people p WHERE p.sin = "
             search_str += "\'"
-            search_str += seller_id
+            search_str += violator_no
             search_str += "\'"                     
             curs.execute(search_str)
             result = curs.fetchall()
@@ -43,7 +55,7 @@ def violationRecord(curs,connection):
                             answer =  str(input("Do you want to keep adding a new person? y/n\n"))
                             if answer =='y':
                                 foo = addperson(curs, connection)
-                            else:
+                            elif answer == 'n':
                                 quit = True
                                 break
                         if quit:
@@ -78,15 +90,20 @@ def violationRecord(curs,connection):
                 print("Please enter valid vehicle id\n")
             else: 
                 valid = True     
-        #if ownerfault == True:
-         #   seller_id
+        
+        if ownerfault == True:
+            astring = "SELECT p.sin FROM people p, owner o WHERE o.owner_id = p.sin AND o.is_primary_owner = 'y' AND o. vehicle_id = " + "\'" + vehicle_id + "\'"
+            curs.execute(astring)
+            result = curs.fetchall()
+            for row in result:
+                violator_no = row[0]
         
         
         # get officer number
         valid = False
         while not valid and foo:
             office_no = str(input("Enter the SIN of the officer: "))
-            search_str = "SELECT name FROM people WHERE p.sin = "
+            search_str = "SELECT name FROM people p WHERE p.sin = "
             search_str += "\'"
             search_str += office_no
             search_str += "\'"
@@ -94,15 +111,15 @@ def violationRecord(curs,connection):
             result = curs.fetchall()
             if len(result) == 0:
                 valid = False
-                print("Please enter SIN\n")
+                print("Please enter a VALID SIN\n")
             else: 
                 valid = True            
 
 
         valid = False
         while not valid and foo:
-            vtype = input("Enter valid vehicle type: ")
-            search_str = "SELECT * FROM ticket_type v WHERE v.vtype = "
+            vtype = input("Enter valid violation type: ")
+            search_str = "SELECT * FROM ticket_type t WHERE t.vtype = "
             search_str += "\'"
             search_str += vtype
             search_str += "\'"
@@ -110,17 +127,18 @@ def violationRecord(curs,connection):
             result = curs.fetchall()
             if len(result) == 0:
                 valid = False
-                print("Please enter vehicle type\n")
+                print("Please enter valid violation type\n")
             else: 
                 valid = True            
         if foo:
             date = input("Enter the date when the accident happened: ")
-            # ################################### check if date entered is valid ####################
         
             place = input("Enter the place where the accident happened: ")        
             descriptions = input("Enter description of the accident: ")
             
-            curs.execute("INSERT INTO ticket(ticket_no, name, violator_no, vehicle_id, office_no, vtype, vdate, place, descriptions) VALUES (" + ticket_no  +  ", \'" + violator_no + "\'" + ", \'" + vehicle_id+ "\'"+ ", \'" + office_no + "\'"    +  ", \'" + vtype + "\'" +     ", \'" +date+ "\'"+     ", \'"+place+"\'"+    ", \'"+descriptions+ " \')") 
+            curs.execute("INSERT INTO ticket(ticket_no, violator_no, vehicle_id, office_no, vtype, vdate, place, descriptions) VALUES (" + str(ticket_no)  +  ", \'" + str(violator_no) + "\'" + ", \'" + str(vehicle_id)+ "\'"+ ", \'" + office_no + "\'"    +  ", \'" + vtype + "\'" +",TO_DATE("+"\'"+str(date)+"\'"+ ","+"'DD-Mon-YYYY')"+     ", \'"+place+"\'"+    ", \'"+descriptions+ "\')") 
+            print("Violation record entered successfully")
+            connection.commit()
         
         valid = False
         while not valid:
@@ -129,6 +147,7 @@ def violationRecord(curs,connection):
                 valid = True
                 if answer == 'y':
                     another_round = True
+                    foo = True
                     print("\nEnter another violation record - \n")
                 else:
                     another_round = False
