@@ -131,7 +131,7 @@ def violationRecord(curs,connection):
             else: 
                 valid = True            
         if foo:
-            date = input("Enter the date when the accident happened: ")
+            date = input("Enter the date when the accident happened in format like 00-Feb-1990, otherwise error will be returned: ")
         
             place = input("Enter the place where the accident happened: ")        
             descriptions = input("Enter description of the accident: ")
