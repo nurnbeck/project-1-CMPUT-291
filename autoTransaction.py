@@ -158,7 +158,7 @@ def autoTransaction(curs,connection):
                                    result = curs.fetchall()
                                    own = False
                                    for row in result:
-                                          if str(row) == str("(\'"+vehicle_id+"\',)"):
+                                          if str(row[0]) == str(vehicle_id):
                                                  
                                                  own= True
                                                  
@@ -195,10 +195,15 @@ def autoTransaction(curs,connection):
                      exe_str += "\'"
                      exe_str += str(seller_id)
                      exe_str += "\'"
+                     exe_str += "AND o.vehicle_id = "
+                     exe_str += "\'"
+                     exe_str += vehicle_id
+                     exe_str += "\'"
                      curs.execute(exe_str)
                      
                      curs.execute("INSERT INTO auto_sale(transaction_id, seller_id, buyer_id, vehicle_id, s_date, price) VALUES (" + str(transaction_id)+  ",\'"+ str(seller_id)+ "\'"+    ",\'"+str(buyer_id)+"\'"+     ",\'"+str(vehicle_id)+"\'"  +",TO_DATE("+"\'"+str(date)+"\'"+ ","+"'DD-Mon-YYYY')"+    ","+str(price)+")")
                      print("Data inserted succesfully.\n")
+                     connection.commit()
               
               valid = False
               while not valid:
