@@ -148,9 +148,24 @@ def autoTransaction(curs,connection):
                             if len(result) == 0:
                                    valid = False
                                    print("This vehicle is not registered in the system\n")
+                                   
                             else:
-                                   valid = True
-                     
+                                   astring = "SELECT o.vehicle_id FROM owner o WHERE o.owner_id = "
+                                   astring += "\'"
+                                   astring += seller_id
+                                   astring += "\'"
+                                   curs.execute (astring)
+                                   result = curs.fetchall()
+                                   own = False
+                                   for row in result:
+                                          if str(row) == str("(\'"+vehicle_id+"\',)"):
+                                                 
+                                                 own= True
+                                                 
+                                   if own == True:
+                                          valid = True
+                                   else:
+                                          print("Seller is not the owner of this vehicle! Please enter another vehicle.")
        
               # check format?
               if foo and keepon:
