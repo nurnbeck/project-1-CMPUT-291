@@ -35,6 +35,7 @@ def autoTransaction(curs,connection):
                             while not (answer =='y' or answer == 'n'):
                                    answer = str(input("Please enter y or n"))
                             if answer =='y':
+                            	   # pass seller_id to addperson()
                                    foo = addperson(curs, connection)
                                    quit = False
                                    
