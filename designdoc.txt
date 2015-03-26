@@ -2,7 +2,7 @@ CMPUT 291 Project 1 Design Document
  
 Yishuo Wang & Hong Chen & Nolan Beck 
  
-//  Student 1 ID // Student 2 ID // 1413411 //
+//  Student 1 ID // 1386152 // 1413411 //
  
 Assignment due: Mar. 27, 2015
  
@@ -16,15 +16,15 @@ Main menu allows the user to choose one of the five actions that you can do. The
 - Classes
 Main(): prompts the user to give there username and password to connect with the database. After words it gives text stating options that direct them around to the various methods available to them. After a letter or number is typed in if it doesn’t match a keyword it repeats the keywords with an error message saying you did not enter correctly.
  
-SearchEngine():
+SearchEngine(): this function allows the user to choose and perform three different searching actions. It gives back personal information upon entering the name or driver's licence number, violation record upon entering the SIN or licence number and vehicle history upon entering the serial number. A message 'No matching result' is given if the data entered is invalid or does not exist in the database.
  
 newVehicleRegistration(): takes the user through the steps for registering a new car. Goes step by step testing the input to make sure it is correct.  If a owner isn’t in the database it first takes you through the steps of entering in an owner into the database then allows insertion of a car.
  
-Auto_Transaction(): 
+autoTransaction(): this function allows the user to enter according information of an auto transaction and records it in the database, it checks if the person (seller/buyer) exists in the database, if not, it allows user to enter the information about this new person. It also checks if the seller is the owner of the vehicle. Upon selling, the ownership of the vehicle and seller is deleted. The vehicle should exist in the database.
  
 driverLicenceRegistration(): takes the user through the steps of entering in registering a person for a driver licence. It first enters the person into the database, then taking them through the extra information of entering in the required information for a licence. If the sin matches one already in the database an appropriate message is shown. An image is also shown able to be added into the database.
  
-violationRecord():
+violationRecord(): this function allows the user to enter infomation regarding a vilation and asks whether to add new person if he/she's not already in the database. It also allows for the violation to be held the responsibility of either a certain person or the primary owner of the vehicle, automatically searching for the primary owner upon choosing the later. Only valid viloation type is allowed to be entered into the database.
  
 addperson():takes curs, connection and possibly a sin number and proceeds to walk a user through inserting a new person into DB. if no sin is provided in function call one can be added later, checks length and validity of inputs
 
@@ -39,7 +39,7 @@ addvehicle():takes curs, connection and possibly a sin number and proceeds to wa
 
 
 (c) Testing Strategy
-
+for entering personal infomation including SIN, the program checks if the person already exists in the database and then asks if the user wants to add record for a new person if not. Other infomation is checked for existance, having or not the right format or the right relationship with other existing information (e.g. the seller must be the owner of the vehicle) in the database upon entering and will not be allowed if it does not.
  
 (d) Group Work Strategy
 - Method of Coordination
@@ -48,7 +48,7 @@ We split the work up as even as possible and worked dependently on our portions 
 (e) work load
 
 Nolan Beck: addvehicle(),addperson(),newVehicleRegistration(), driverLicenceRegistration()
-Hong Chen:
-Yishuo Wang:
+Hong Chen: autoTransaction(), violationRecord(), searchEngine()
+Yishuo Wang: main(), addperson(), driverLicenceRegistration()
 
 
