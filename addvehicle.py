@@ -14,10 +14,20 @@ def addvehicle(curs, connection, serial_no = 'zzzzzz'):
     model = input("input model > ")
     while(len(serial_no) > 20 or len(serial_no) == 0):
         model = input("invalid input, model > ")   
-        
+    
+    # year numeric(4, 0)
     year = input("input year > ")
-    while(len(year) > 4 or len(year) == 0):
-        year = input("input after 9999, invalid year > ")                   
+    #while(len(year) > 4 or len(year) == 0):
+    while True:
+        if len(year) > 4 or len(year) == 0:
+            year = input("input after 9999, invalid year > ")
+            coninue
+        try:
+            year = int(year)
+            break
+        except:
+            year = input("invalid input, year > ")
+            continue
     color = input("input color > ")
     while(len(color) > 10 or len(color) == 0):
         color = input("invalid input, color > ")                   
@@ -33,7 +43,7 @@ def addvehicle(curs, connection, serial_no = 'zzzzzz'):
             type_id = input("invalid input, type_id > ")
             continue
     #insertion
-    query = """insert into people values(
+    query = """insert into vehicle values(
     :serial_no,
     :maker,
     :model,
