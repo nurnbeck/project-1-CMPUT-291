@@ -153,7 +153,7 @@ def searchEngine(curs, connection):
                      if search_by == 1:
                             nameorno = str(input("Driver's Info - Enter Name: "))
                                              
-                            search_str = ("SELECT name, d.licence_no, addr, birthday, class, description, expiring_date FROM people p, drive_licence d, driving_condition dc, restriction r WHERE p.sin = d.sin AND p.name = ")
+                            search_str = ("SELECT name, d.licence_no, addr, birthday, class, description, expiring_date FROM people p, drive_licence d, driving_condition dc, restriction r WHERE d.licence_no (+)=r.licence_no AND r.r_id (+)= dc.c_id AND p.sin = d.sin AND p.name =  ")
                             search_str += "\'"
                             search_str += nameorno
                             search_str += "\'"
@@ -177,7 +177,7 @@ def searchEngine(curs, connection):
                      if search_by == 2:
                             nameorno = str(input("Driver's Info - Enter Licence No> "))
        
-                            search_str = ("SELECT name, d.licence_no, addr, birthday, class, description, expiring_date FROM people p, drive_licence d, driving_condition dc, restriction r WHERE p.sin = d.sin AND d.licence_no = ")
+                            search_str = ("SELECT name, d.licence_no, addr, birthday, class, description, expiring_date FROM people p, drive_licence d, driving_condition dc, restriction r WHERE d.licence_no (+)=r.licence_no AND p.sin = d.sin AND r.r_id (+)= dc.c_id AND d.licence_no = ")
                             search_str += "\'"
                             search_str += str(nameorno)
                             search_str += "\'"
