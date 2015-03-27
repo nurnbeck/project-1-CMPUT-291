@@ -1,3 +1,6 @@
+from addvehicle import *
+from addperson import *
+
 #New vehicle registration
 def newVehicleRegistration(curs,connection):
     #curs.execute()
