@@ -199,17 +199,18 @@ def searchEngine(curs, connection): # ############# modification 2015.Mar.15 ###
 def main():
     connection, curs = connect()
     if connection == 0:
-        print("Bye")
+        print("Error connecting to database")
         return
     
-    # setup new tables
-    setup_tbls(curs, connection)
-
+    print("Main Menu")
+    print("Choose the number of function")
     print("1. New Vehicle Registration (n)")
     print("2. Auto Transaction (a)")
     print("3. Driver Licence Registration (d)")
     print("4. Violation Record (v)")
     print("5. Search Engine (s)")
+    print("type quit(q) to quit, cls(c) to clear screen")
+    print("type menu(m) to display menu")
 
     while True:
         inp = input("Enter your choice: ").lower()
@@ -230,11 +231,42 @@ def main():
         elif inp == '2' or inp == 'a':
             autoTransaction(curs, connection)
         elif inp == '3' or inp == 'd':
-            driverLicenceRegistration(curs, connection)
+            inp = '3'
+            while inp == '3':
+                driverLicenceRegistration(curs, connection)
+                inp = input("Do you want to register another licence? (y/n) > ").lower()
+                while True:
+                    if inp == 'y' or inp == 'yes':
+                        inp = '3'
+                        break
+                    elif inp == 'n' or inp == 'no' or inp == 'quit':
+                        inp = 'zzzzz'
+                        break
+                    else:
+                        inp = input("Please answer yes(y) or no(n) > ").lower()
         elif inp == '4' or inp == 'v':
             violationRecord(curs, connection)
         elif inp == '5' or inp == 's':
             searchEngine(curs, connection)           # ############# modification 2015.Mar.15 ##############
+        elif inp == 'cls' or inp == 'c':
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print("Main Menu")
+            print("1. New Vehicle Registration (n)")
+            print("2. Auto Transaction (a)")
+            print("3. Driver Licence Registration (d)")
+            print("4. Violation Record (v)")
+            print("5. Search Engine (s)")
+            print("type quit(q) to quit, cls(c) to clear screen")
+            print("type menu(m) to display menu")
+        elif inp == 'menu' or inp == 'm':
+            print("Main Menu")
+            print("1. New Vehicle Registration (n)")
+            print("2. Auto Transaction (a)")
+            print("3. Driver Licence Registration (d)")
+            print("4. Violation Record (v)")
+            print("5. Search Engine (s)")
+            print("type quit to quit(q), cls(c) to clear screen")
+            print("type menu(m) to display menu")
         else:
             print("Invalid")
         print(inp)
