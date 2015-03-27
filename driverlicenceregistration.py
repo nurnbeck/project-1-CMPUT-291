@@ -5,25 +5,31 @@ Register one person (sin) with a driver licence.
 - If that person already have a driver licence, raise an error message and
     return
 
-Not tested yet
-Make sure having addperson.py along with this file when testing.
 '''
 
 import random
+import cx_Oracle
+import datetime
+from addperson import *
 
-def driverlicenceregistration(curs, connection):
+def driverLicenceRegistration(curs, connection):
     # SIN number of the driver
-    sin_num = input("input SIN number: ")
+    sin_num = input("input SIN number > ")
+    while len(sin_num) > 15 or len(sin_num) == 0:
+        sin_num = input("invalid input, please provide driver's sin >")
 
     # check if the person exist in the database
-    curs.execute("select sin from people")
-    rows = curs.fetchall()
+    curs.execute("SELECT sin FROM PEOPLE")
+    rows = curs.fetchmany()
     exist = False
+    print("ROWS", rows)
     for row in rows:
-        if sin_num == row:
+        rsin = row[0].strip()
+        print("Rsin", rsin)
+        if sin_num == rsin:
             exist = True
             break
-
+    print("Exist", exist)
     # if the person does not exist, ask the user to 
     #   add that person to database
     if not exist:
@@ -31,8 +37,12 @@ def driverlicenceregistration(curs, connection):
         while True:
             inp = input("Do you want to add the person to database?(y/n) ").lower()
             if inp == 'y' or inp == 'yes':
-                addperson(curs, connection, sin_num)
-                break
+                check = addperson(curs, connection, sin_num)
+                if check:
+                    break
+                else:
+                    print("Error adding person to the database")
+                    continue
             elif inp == 'n' or inp == 'no':
                 print("Invalid sin")
                 return
@@ -43,19 +53,20 @@ def driverlicenceregistration(curs, connection):
     curs.execute("select sin from drive_licence")
     rows = curs.fetchall()
     for row in rows:
-        if sin_num == row:
+        if sin_num == row[0].strip():
             print("The person already have a drive_licence")
             return
 
     # input class
     drive_class = input("Enter class >")
 
-    # issuing_date = current time, expiring_date = issuing_date + 5 years
-    issuing_date = datetime.datetime.now().date()
-    expiring_date = datetime.date(issuing_date.year+5, issuing_date.month, issuing_date.day)
+    # input issuing date and expiring date
+    issuing_date = input("Input issuing date (mm-dd-yyyy) >")
+    expiring_date = input("Input expiring date (mm-dd-yyyy) >")
 
     # generates random licence number
     exist = True
+
     while exist:
         licence_no = ''
         for i in range(3):
@@ -64,17 +75,26 @@ def driverlicenceregistration(curs, connection):
             licence_no += str(random.randint(0,9))
         curs.execute("select licence_no from drive_licence")
         rows = curs.fetchall()
+        print("Generated", licence_no)
+        print("Licence lst", rows)
+        if len(rows) == 0:
+            print("NO LICENCE")
+            break
         for row in rows:
-            if licence_no == row:
+            print(row)
+            if licence_no == row[0]:
                 exist = True
                 break
-        exist = False
-
-
+            else:
+                exist = False
+    
+    print(licence_no)
 
     # load image into memory from local file
     while True:
-        image_name = input("input image name: ")
+        image_name = input("input image name, type exit to quit > ")
+        if image_name == 'exit':
+            return
         try:
             f_image = open(image_name, 'rb')
             image = f_image.read()
@@ -82,15 +102,28 @@ def driverlicenceregistration(curs, connection):
         except:
             print("Unable to load image file")
             continue
-    f_image.close()
 
     # prepare memory for operation parameters
-    curs.setinputsizes(image = cx_Oravle.BLOB)
+    curs.setinputsizes(photo = cx_Oracle.BLOB)
 
-    curs.execute("insert into drive_licence "
-                 "values(:licence_no, :sin, :class, :photo, :issuing_date, :expiring_date)", {'licence_no':licence_no, 'sin':sin_num, 'class':drive_class, 'photo': image, 'issuing_date':issuing_date.strftime('%d-%b-%Y'), 'expiring_date':expiring_date.strftime('%d-%b-%Y')})
+    query = """insert into drive_licence(licence_no, sin, class, photo, issuing_date, expiring_date) values(
+    :licence_no,
+    :sin,
+    :class,
+    :photo,
+    to_date(:issuing_date, 'MM-DD-YYYY'),
+    to_date(:expiring_date, 'MM-DD-YYYY'))"""
 
-    connection.commit()
+    try:
+        curs.execute(query, {'licence_no':licence_no, 'sin':sin_num, 'class':drive_class,'photo':image, 'issuing_date':issuing_date, 'expiring_date':expiring_date})
 
-    print("Drive licence registered for", sin_num, "with licence_no", licence_no)
+        connection.commit()
+
+        print("Drive licence registered for", sin_num, "with licence_no", licence_no)
+
+    except:
+        print("Unknown error occured, adding drive licence failed")
+
+    f_image.close()
+
     return
