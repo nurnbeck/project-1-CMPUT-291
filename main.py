@@ -45,6 +45,7 @@ def connect():
     return 0, 0
 
 
+#New vehicle registration
 def newVehicleRegistration(curs,connection):
     #curs.execute()
     #enter car data to be inserted(will refine later)
@@ -52,6 +53,7 @@ def newVehicleRegistration(curs,connection):
     
     ownbool = False
     while(ownbool == False):
+        
         #section for checking if new sin is entered
         owner_id = str(input("please provide owner's sin > "))
         search_str = "SELECT name FROM people p WHERE p.sin = \'"
@@ -60,72 +62,85 @@ def newVehicleRegistration(curs,connection):
         print(search_str)
         curs.execute(search_str)
         result = curs.fetchall()
+        
         if (len(result) == 0):
             n_own = 'y'
             n_own = input("new sin entered, add new person? (y)es or (n)o or (e)xit >")
-            if (n_own == 'e'):
-                pass            
-        else:  
-            n_own = input("user found, add vehicle? (y)es or (n)o or (e)xit >")
             if (n_own == 'n'):
-                n_own = 'e'
+                return
             if (n_own == 'e'):
-                pass        
+                return     
+        else:  
+            n_own = input("user found, add vehicle? (y)es or (n)o or (e)xit >").lower()
+            while ((n_own != 'y') or (n_own != 'n')):
+                if (n_own == 'n'):
+                    return
+                if (n_own == 'e'):
+                    return    
+                #confusing but just skips adding new people
+                if (n_own == 'y'):
+                    n_own = 'n'
+                    break
+                    
             
-            #add new people
+            
         if (n_own == 'y'):
-            
-             addperson(curs, connection, owner_id)      
-            
+            #adding new people
+            addperson(curs, connection, owner_id)
             n_own = 'n'
-            
             #new owner handled, vehicle adding
         if (n_own == 'n'):
-            
-            serial_no = input("input serial_no > ")
-            while(len(serial_no) > 30):
-                serial_no = input("input too long, input serial_no > ")
+            while(n_own == 'n'):
+                vehicle_id = str(input("please provide vehicle serial number > "))
+                search_str = "SELECT serial_no FROM vehicle v WHERE v.serial_no = \'"
+                search_str += vehicle_id
+                search_str +=  "\'"
+                print(search_str)
+                curs.execute(search_str)
+                result = curs.fetchall()
                 
-            maker = input("input maker > ")
-            while(len(serial_no) > 30):
-                maker = input("input too long, input maker > ")            
+                if (len(result) == 0):
+                    addvehicle(curs,connection,vehicle_id)
+                    break
+                else:            
+                    print("vehicle already exists,")
+            is_primary_owner = input("is he/she primary owner of this vehicle? (y) or (n) ").lower()
+            while(is_primary_owner != 'y' or is_primary_owner != 'n'):
+                if (is_primary_owner == 'y'):
+                    break
+                if (is_primary_owner == 'n'):
+                    break                
+                is_primary_owner = input("is he/she primary owner of this vehicle? (y) or (n) ").lower()
                 
-            model = input("input model > ")
-            while(len(serial_no) > 30):
-                model = input("input too long, model > ")   
-                
-            year = input("input year > ")
-            while(len(serial_no) > 30):
-                year = input("input too long, year > ")                   
-            color = input("input color > ")
-            while(len(serial_no) > 30):
-                color = input("input too long, color > ")                   
-            type_id = input("input type_id > ")
-            while(len(serial_no) > 30):
-                type_id = input("input too long, type_id > ")                   
-            vdata = [(serial_no, maker, model, year, color, type_id)]   
             
-            cursInsert.bindarraysize = 1
-            cursInsert.setinputsizes(int, 30, 30, int, 15, int)
-            cursInsert.executemany("INSERT INTO vehicle(serial_no, maker, model, year, color, type_id)" 
-                                   "VALUES (:1, :2, :3, :4, :5, :6)",vdata)
-            
-            primary_owner = input("is he/she primary owner of this vehicle? ")
-            odata = [(owner_id,serial_no,is_primary_owner)]            
-            
-            curs.bindarraysize = 1
-            curs.setinputsizes(int, int, bool)
-            curs.executemany("INSERT INTO owner(owner_id,vehicle_id,is_primary_owner)" 
-                                   "VALUES (:1, :2, :3)",odata)   
-        
-        else:
+            query = """insert into owner values(
+            :owner_id,
+            :vehicle_id,
+            :is_primary_owner)"""
+            try:
+                curs.execute(query,{'owner_id':owner_id,
+                                    'vehicle_id':vehicle_id,
+                                    'is_primary_owner':is_primary_owner}
+                             )
+                print("New ownership successfully added.")
+                connection.commit()
+                return True
+            except cx_Oracle.IntegrityError as ie:
+                print("An integrity error was thrown.")
+                print("The Serial you attemped to enter already exists in the database.")
+                return False
+            except Exception as e:
+                errs, = e.args
+                print("Oops, an exception was thrown.")
+                print("Error code:" + str(errs.code))
+                print("Error message:" + errs.message)
+                return False            
+            connection.commit()
             own = input("enter another owner/vehicle? (y) or (n) or (e) to exit> ").lower()
             if (own == 'e'):
                 ownbool = True
             if (own == 'n'):
                 ownbool = True
-                
-
 '''
 def autoTransaction():
     pass
