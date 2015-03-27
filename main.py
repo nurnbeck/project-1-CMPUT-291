@@ -12,20 +12,6 @@ from autoTransaction import autoTransaction
 from violationRecord import violationRecord
 
 def connect():
-    '''
-    connstr = input("Enter your user name: ")
-    connstr += '/' + getpass.getpass("Enter your password: ")
-    connstr += '@gwynne.cs.ualberta.ca:1521/crs'
-    try:
-        print("Connection successful")
-        connection = cx_Oracle.connect(connstr)
-    except cx_Oracle.DatabaseError as exc:
-        print("Unable to connect to database")
-        error, = exc.args
-        print(sys.stderr, "Oracle code:". error.code)
-        print(sys.stderr, "Oracle message:", error.message)
-    return connection, connection.cursor()
-    '''
     logintime = 0
     while logintime < 3:
         connstr = input("Enter your username: ")
@@ -141,10 +127,7 @@ def newVehicleRegistration(curs,connection):
                 ownbool = True
             if (own == 'n'):
                 ownbool = True
-'''
-def autoTransaction():
-    pass
-'''
+
 
 def driverLicenceRegistration(curs, connection):
     sin = str(input("please input user sin > "))
@@ -185,17 +168,8 @@ def driverLicenceRegistration(curs, connection):
     values (:license_no, :sin, :class, :image, :issuing_date, expiring_date)"""
     curs.execute(insert,{'licence_no':licence_no, 'sin':sin,
                            'Dclass':Class, 'photo':image, 'issuing_date':issuing_date, 'expiring_date':expiring_date})
-    
-'''
-def violationRecord():
-    pass
 
 
-def searchEngine(curs, connection): # ############# modification 2015.Mar.15 ##############
-    pass
-'''
-
-# will call setup function somewhere in the main function
 def main():
     connection, curs = connect()
     if connection == 0:
@@ -247,7 +221,7 @@ def main():
         elif inp == '4' or inp == 'v':
             violationRecord(curs, connection)
         elif inp == '5' or inp == 's':
-            searchEngine(curs, connection)           # ############# modification 2015.Mar.15 ##############
+            searchEngine(curs, connection)
         elif inp == 'cls' or inp == 'c':
             os.system('cls' if os.name == 'nt' else 'clear')
             print("Main Menu")
