@@ -2,7 +2,7 @@ CMPUT 291 Project 1 Design Document
  
 Yishuo Wang & Hong Chen & Nolan Beck 
  
-//  Student 1 ID // 1386152 // 1413411 //
+// 1272407 // 1386152 // 1413411 //
  
 Assignment due: Mar. 27, 2015
  
