@@ -4,9 +4,10 @@
 import sys
 import cx_Oracle
 import getpass
-from searchEngine import searchEngine             
-from setup import setup_tbls
+import os
 from datetime import date, datetime, timedelta
+
+from searchEngine import searchEngine
 from addvehicle import addvehicle
 from autoTransaction import autoTransaction
 from violationRecord import violationRecord
