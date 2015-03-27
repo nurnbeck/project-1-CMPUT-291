@@ -7,10 +7,12 @@ import getpass
 import os
 from datetime import date, datetime, timedelta
 
-from searchEngine import searchEngine
-from addvehicle import addvehicle
-from autoTransaction import autoTransaction
-from violationRecord import violationRecord
+from VehicleReg import *
+from autoTransaction import *
+from driverlicenceregistration import *
+from violationRecord import *
+from searchEngine import *
+from addvehicle import *
 
 def connect():
     logintime = 0
@@ -32,6 +34,7 @@ def connect():
     return 0, 0
 
 
+'''
 #New vehicle registration
 def newVehicleRegistration(curs,connection):
     #curs.execute()
@@ -169,7 +172,7 @@ def driverLicenceRegistration(curs, connection):
     values (:license_no, :sin, :class, :image, :issuing_date, expiring_date)"""
     curs.execute(insert,{'licence_no':licence_no, 'sin':sin,
                            'Dclass':Class, 'photo':image, 'issuing_date':issuing_date, 'expiring_date':expiring_date})
-
+'''
 
 def main():
     connection, curs = connect()
